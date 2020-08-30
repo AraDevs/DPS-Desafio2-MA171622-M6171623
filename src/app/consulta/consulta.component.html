@@ -1,0 +1,52 @@
+<div *ngIf="myClients.length == 0">
+    <h1 class="display-1 text-center">Para iniciar, agregue registros de cliente.</h1>
+</div>
+<div *ngIf="myClients.length != 0">
+    <form #consultForm="ngForm" (ngSubmit)="addCons()">
+        <div class="form-group">
+            <label for="client">Cliente</label>
+            <select class="form-control" id="client" required [(ngModel)]="client" name="client">
+                <option *ngFor="let c of myClients" [ngValue]="c">{{c.name}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="pet">Mascota</label>
+            <input type="text" class="form-control" id="pet" required [(ngModel)]="pet" name="pet" placeholder="Nombre de la mascota">
+        </div>
+        <div class="form-group">
+            <label for="treatment">Tratamiento</label>
+            <input type="text" class="form-control" id="treatment" required [(ngModel)]="treatment" name="treatment" placeholder="Tratamiento realizado">
+        </div>
+        <div class="form-group">
+            <label for="medicine">Medicamento</label>
+            <input type="text" class="form-control" id="medicine" required [(ngModel)]="medicine" name="medicine" placeholder="Medicamento asignado">
+        </div>
+        <div class="form-group">
+            <label for="price">Costo</label>
+            <input currencyMask [options]="{align: 'left', min: '0.01'}" class="form-control" id="price" required [(ngModel)]="price" name="price" placeholder="Precio en dólares" required>
+        </div>
+        <button type="submit" class="btn btn-success" [disabled]="!consultForm.form.valid">Agregar</button>
+    </form>
+    <table class="table">
+        <thead>
+            <th>Cliente</th>
+            <th>Mascota</th>
+            <th>Tratamiento</th>
+            <th>Medicamento</th>
+            <th>Costo</th>
+            <th>Descuento aplicado</th>
+            <th>Total</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let consult of myConsults">
+                <td>{{consult.client.name}}</td>
+                <td>{{consult.pet}}</td>
+                <td>{{consult.treatment}}</td>
+                <td>{{consult.medicine}}</td>
+                <td>${{consult.price.toFixed(2)}}</td>
+                <td>{{consult.discount}}%</td>
+                <td>${{consult.total.toFixed(2)}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Client } from './client';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'DPS-Desafio1-MA171622-M6171623';
+  clientOn: boolean = true;
 }
