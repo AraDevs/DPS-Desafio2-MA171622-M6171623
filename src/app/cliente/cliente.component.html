@@ -7,7 +7,9 @@
         <label for="dui">DUI</label>
         <input type="text" class="form-control" id="dui" required [(ngModel)]="dui" name="dui" placeholder="DUI (Formato: 00000000-0)" pattern="[0-9]{8}-[0-9]{1}">
     </div>
-    <button type="submit" class="btn btn-success" [disabled]="!clientForm.form.valid">Agregar</button>
+    <div class="row justify-content-center">
+        <button type="submit" class="btn btn-success right" [disabled]="!clientForm.form.valid">Agregar</button>
+    </div>
 </form>
 <table class="table">
     <thead>

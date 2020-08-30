@@ -1,5 +1,5 @@
 <div *ngIf="myClients.length == 0">
-    <h1 class="display-1 text-center">Para iniciar, agregue registros de cliente.</h1>
+    <h1 class="display-4 text-center">Para iniciar, agregue registros de cliente.</h1>
 </div>
 <div *ngIf="myClients.length != 0">
     <form #consultForm="ngForm" (ngSubmit)="addCons()">
@@ -25,7 +25,9 @@
             <label for="price">Costo</label>
             <input currencyMask [options]="{align: 'left', min: '0.01'}" class="form-control" id="price" required [(ngModel)]="price" name="price" placeholder="Precio en dólares" required>
         </div>
+        <div class="row justify-content-center">
         <button type="submit" class="btn btn-success" [disabled]="!consultForm.form.valid">Agregar</button>
+    </div>
     </form>
     <table class="table">
         <thead>
