@@ -1,0 +1,25 @@
+.header{
+    text-align: center;
+    background: #0278ae;
+    color: #a5ecd7;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+.container{
+    padding: 0!important;
+}
+.orden{
+    padding: 1rem;
+}
+.parraf{
+    font-size: 18px;
+}
+
+.colors{
+    color: royalblue;
+}
+
+.formu{
+    text-align: center;
+    margin-top: 10%;
+}

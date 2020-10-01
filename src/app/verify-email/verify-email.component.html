@@ -1,0 +1,18 @@
+<div class="container bg-white rounded formu">
+    <div class="header">
+        <h1>Gracias por registrarte!</h1>
+        <p class="parraf" *ngIf="authService.userData as user">Hemos enviado un email de confirmacion ah <strong>{{user.email}}</strong>.</p>
+        <p class="parraf">Por favor revisa tu Email y clikea el link para verificar tu correo</p>
+    </div>
+    <form name="formu" class="orden">
+        <div class="form-group">
+            <div class="form-group">
+                <button type="button" class="btn btnPrimary" (click)="authService.SendVerificationMail()">
+                    <i class="fas fa-redo-alt"></i>
+                    Enviar email denuevo
+                </button>
+              </div>
+              <span>Todo listo?<span class="redirect colors" routerLink="/sign-in"> Inicia Sesion</span></span>
+        </div>
+    </form>
+</div>

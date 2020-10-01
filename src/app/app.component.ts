@@ -8,5 +8,4 @@ import { Client } from './client';
 })
 export class AppComponent {
   title = 'DPS-Desafio1-MA171622-M6171623';
-  clientOn: boolean = true;
 }

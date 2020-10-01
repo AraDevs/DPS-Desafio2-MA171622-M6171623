@@ -1,0 +1,29 @@
+<div class="container bg-white rounded formu">
+    <div class="header">
+        <h1>Registrarse</h1>
+        <p class="parraf">Ingrese los datos solicitados para registrarse</p>
+    </div>
+    <form name="formu" class="orden">
+        <div class="form-group">
+            <div class="form-group">
+                <label class="font-weight-bold">Correo Electronico</label>
+                <input type="email" class="form-control" placeholder="Correo Electronico" #userEmail required>
+            </div>
+            <div class="form-group">
+                <label class="font-weight-bold">Contraseña</label>
+                <input type="password" class="form-control" placeholder="Contraseña" #userPwd required>
+            </div>
+            <div class="form-group">
+                <input type="button" class="btn btn-success btn-lg" value="Registrarse"
+                (click)="authService.SignUp(userEmail.value, userPwd.value)">
+              </div>
+              <div class="form-group">
+                <button type="button" class="btn btn-primary btn-lg" (click)="authService.GoogleAuth()">
+                  <i class="fab fa-google-plus-g"></i>
+                  Ingresar con Google
+                </button>
+              </div>
+              <span>Ya tienes cuenta?<span class="redirect colors" routerLink="/sign-in"> Inicia Sesion</span></span>
+        </div>
+    </form>
+</div>
