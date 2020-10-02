@@ -26,11 +26,12 @@
             <input currencyMask [options]="{align: 'left', min: '0.01'}" class="form-control" id="price" required [(ngModel)]="price" name="price" placeholder="Precio en dólares" required>
         </div>
         <div class="row justify-content-center">
-        <button type="submit" class="btn btn-success" [disabled]="!consultForm.form.valid">Agregar</button>
+        <button type="submit" class="btn btn-success" [disabled]="!consultForm.form.valid">{{($key)? 'Actualizar' : 'Agregar'}}</button>
     </div>
     </form>
     <table class="table">
         <thead>
+            <th>#</th>
             <th>Cliente</th>
             <th>Mascota</th>
             <th>Tratamiento</th>
@@ -38,16 +39,26 @@
             <th>Costo</th>
             <th>Descuento aplicado</th>
             <th>Total</th>
+            <th>Acciones</th>
         </thead>
         <tbody>
             <tr *ngFor="let consult of myConsults">
-                <td>{{consult.client.name}}</td>
+                <td>{{consult.id}}</td>
+                <td>{{getClient(consult.clientKey).name}}</td>
                 <td>{{consult.pet}}</td>
                 <td>{{consult.treatment}}</td>
                 <td>{{consult.medicine}}</td>
                 <td>${{consult.price.toFixed(2)}}</td>
                 <td>{{consult.discount}}%</td>
                 <td>${{consult.total.toFixed(2)}}</td>
+                <td>
+                    <a class="btn btn-secondary text-white botone" (click)="onEdit(consult)">
+                        <i class="far fa-edit"></i>
+                    </a>
+                    <a class="btn btn-danger text-white botone" (click)="onDelete(consult.$key)">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </td>
             </tr>
         </tbody>
     </table>

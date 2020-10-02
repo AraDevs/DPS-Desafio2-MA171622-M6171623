@@ -29,6 +29,18 @@ export class ClienteService {
     });
   }
 
+  addVisit(Clien:Client) {
+    this.ClienteLista.update(Clien.$key, {
+      visits: Clien.visits + 1
+    });
+  }
+
+  removeVisit(Clien:Client) {
+    this.ClienteLista.update(Clien.$key, {
+      visits: Clien.visits - 1
+    });
+  }
+
   deleteCliente($key:string){
     this.ClienteLista.remove($key);
   }

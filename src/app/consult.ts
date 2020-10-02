@@ -2,7 +2,9 @@ import { Client } from './client'
 
 export class Consult {
     constructor(
-        public client: Client,
+        public $key: string,
+        public id: number,
+        public clientKey: string,
         public pet: string,
         public treatment: string,
         public medicine: string,

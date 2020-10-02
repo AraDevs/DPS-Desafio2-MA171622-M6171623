@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Client } from '../client';
 import { AppComponent } from '../app.component';
-import { clients } from '../globals';
 import Swal from 'sweetalert2';
 import { ClienteService } from '../servicio/cliente.service';
+import { ConsultaService } from '../servicio/consulta.service';
 import { NgForm } from '@angular/forms';
 import { $ } from 'protractor';
+import { Consult } from '../consult';
 
 @Component({
   selector: 'app-cliente',
@@ -19,12 +20,14 @@ export class ClienteComponent implements OnInit {
   $key: string;
   visits: number;
   duiahora : string;
-  myClients = clients;
+  myClients: Client[] = [];
+  myConsults: Consult[] = []
   clie:Client;
   
 
   constructor(
     public ClientService: ClienteService,
+    public ConsultaService: ConsultaService
   ) { }
 
   ngOnInit(): void {
@@ -48,8 +51,8 @@ export class ClienteComponent implements OnInit {
     })
     
     swalWithBootstrapButtons.fire({
-      title: 'Estas seguro de eliminar?',
-      text: "Una vez eliminado no se puede revertir",
+      title: '¿Estás seguro de eliminar?',
+      text: "Una vez eliminado no se podrá recuperar este registro",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Si',
@@ -57,10 +60,23 @@ export class ClienteComponent implements OnInit {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
+
+        //Eliminando consultas del cliente
+
+        this.myConsults.forEach(cons => {
+          if (cons.clientKey === $key) {
+            this.ConsultaService.deleteConsulta(cons.$key);
+          }
+        });
+
+
+        //Eliminando cliente
         this.ClientService.deleteCliente($key);
+
+        this.reset();
         swalWithBootstrapButtons.fire(
           'Eliminado!',
-          'Eliminado el cliente.',
+          'El cliente ha sido eliminado.',
           'success'
         )
       } else if (
@@ -68,7 +84,7 @@ export class ClienteComponent implements OnInit {
       ) {
         swalWithBootstrapButtons.fire(
           'Cancelado',
-          'Cliente mantenido',
+          'Operación abortada',
           'error'
         )
       }
@@ -88,7 +104,7 @@ export class ClienteComponent implements OnInit {
     } else {
       if (this.clie == null || this.dui == this.duiahora) {
         this.ClientService.updateCliente(new Client(this.$key, this.name, this.dui, this.visits));
-        Swal.fire("Cliente actulizado.", "Operación exitosa", "success");
+        Swal.fire("Cliente actualizado.", "Operación exitosa", "success");
       }
       else{
         Swal.fire("El dui ingresado ya existe", "Error", "error");
@@ -105,11 +121,11 @@ export class ClienteComponent implements OnInit {
     if (visits < 2) {
       return "0%";
     }
-    else if (visits <= 4) {
+    else if (visits < 5) {
       return "5%";
     }
     else {
-      return "10%";
+      return "8%";
     }
   }
   
@@ -122,6 +138,13 @@ export class ClienteComponent implements OnInit {
         this.myClients.push(x as Client);
       });
     });
-    return this.myClients;
+    this.ConsultaService.getConsulta().snapshotChanges().subscribe(items=>{
+      this.myConsults.length = 0;
+      items.forEach(element =>{
+        let x = element.payload.toJSON();
+        x["$key"] = element.key;
+        this.myConsults.push(x as Consult);
+      });
+    });
   }
 }
