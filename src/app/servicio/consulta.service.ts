@@ -45,4 +45,7 @@ export class ConsultaService {
   deleteConsulta($key: string) {
     this.ConsultaLista.remove($key);
   }
+  filterConsulta(param){
+    return this.ConsultaLista = this.firebase.list('Consulta', ref => ref.orderByChild("id").equalTo(param));
+  }
 }

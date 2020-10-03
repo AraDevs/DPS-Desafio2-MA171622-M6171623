@@ -1,9 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { Client } from '../client';
-import { Consult } from '../consult';
-import { clients, consults } from '../globals';
-import { ConsultaService } from '../servicio/consulta.service';
-import { ClienteService } from '../servicio/cliente.service';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
+import {
+  Client
+} from '../client';
+import {
+  Consult
+} from '../consult';
+import {
+  clients,
+  consults
+} from '../globals';
+import {
+  ConsultaService
+} from '../servicio/consulta.service';
+import {
+  ClienteService
+} from '../servicio/cliente.service';
 import Swal from 'sweetalert2';
 
 
@@ -23,17 +37,18 @@ export class ConsultaComponent implements OnInit {
   price: number;
   discount: number;
   total: number;
+  param: string = "";
 
   //Esta variable se usará al actualizar una consulta,
   //para verificar si el cliente a sido cambiado, caso
   //en el cual deberá removerse una visita al cliente
   //original y agregársela al nuevo cliente
   initialClient: Client;
-  
+
   myClients: Client[] = [];
   myConsults: Consult[] = [];
 
-  constructor(public ClientService: ClienteService, public ConsultaService: ConsultaService) { }
+  constructor(public ClientService: ClienteService, public ConsultaService: ConsultaService) {}
 
   ngOnInit(): void {
     this.leer();
@@ -49,11 +64,10 @@ export class ConsultaComponent implements OnInit {
       //Generando id
       if (this.myConsults.length == 0) {
         this.id = 1;
-      }
-      else {
+      } else {
         this.id = this.myConsults[this.myConsults.length - 1].id + 1;
       }
-      
+
       //Agregando visita al cliente
       this.ClientService.addVisit(this.client);
 
@@ -63,8 +77,7 @@ export class ConsultaComponent implements OnInit {
 
       this.ConsultaService.insertConsulta(new Consult(this.$key, this.id, this.client.$key, this.pet, this.treatment, this.medicine, this.price, this.discount, this.total));
       outTitle = 'Consulta agregada exitosamente.';
-    }
-    else {
+    } else {
       //ACTUALIZAR
 
       if (this.client != this.initialClient) {
@@ -80,19 +93,16 @@ export class ConsultaComponent implements OnInit {
       outTitle = 'Consulta actualizada exitosamente.';
     }
 
-    var outHtml = 
-    '<div class="row"><div class="col-6">Número de consulta:</div><div class="col-6">#' + this.id + '</div></div>' +
-    '<div class="row"><div class="col-6">Cliente:</div><div class="col-6">' + this.client.name + '</div></div>' +
-    '<div class="row"><div class="col-6">DUI:</div><div class="col-6">' + this.client.dui + '</div></div>' +
-    '<div class="row"><div class="col-6">Nombre de mascota:</div><div class="col-6">' + this.pet + '</div></div>' +
-    '<div class="row"><div class="col-6">Tratamiento:</div><div class="col-6">' + this.treatment + '</div></div>' +
-    '<div class="row"><div class="col-6">Medicamento:</div><div class="col-6">' + this.medicine + '</div></div>' +
-    '<div class="row"><div class="col-6">Costo de consulta:</div><div class="col-6">$' + this.price.toFixed(2) +  '</div></div>' +
-    '<div class="row"><div class="col-6">Descuento:</div><div class="col-6">$' + (this.price * this.discount / 100).toFixed(2) + '</div></div>' +
-    '<div class="row"><div class="col-6">Total a pagar:</div><div class="col-6">$' + this.total.toFixed(2) + '</div></div>';
-
-    this.reset();
-
+    var outHtml =
+      '<div class="row"><div class="col-6">Número de ticket:</div><div class="col-6">#' + this.id + '</div></div>' +
+      '<div class="row"><div class="col-6">Cliente:</div><div class="col-6">' + this.client.name + '</div></div>' +
+      '<div class="row"><div class="col-6">DUI:</div><div class="col-6">' + this.client.dui + '</div></div>' +
+      '<div class="row"><div class="col-6">Nombre de mascota:</div><div class="col-6">' + this.pet + '</div></div>' +
+      '<div class="row"><div class="col-6">Tratamiento:</div><div class="col-6">' + this.treatment + '</div></div>' +
+      '<div class="row"><div class="col-6">Medicamento:</div><div class="col-6">' + this.medicine + '</div></div>' +
+      '<div class="row"><div class="col-6">Costo de consulta:</div><div class="col-6">$' + this.price.toFixed(2) + '</div></div>' +
+      '<div class="row"><div class="col-6">Descuento:</div><div class="col-6">$' + (this.price * this.discount / 100).toFixed(2) + '</div></div>' +
+      '<div class="row"><div class="col-6">Total a pagar:</div><div class="col-6">$' + this.total.toFixed(2) + '</div></div>';
 
     Swal.fire({
       title: outTitle,
@@ -104,9 +114,11 @@ export class ConsultaComponent implements OnInit {
         popup: 'animate__animated animate__fadeOutUp'
       }
     });
+    this.printTxt();
+    this.reset();
   }
 
-  onEdit(consulta: Consult){
+  onEdit(consulta: Consult) {
     this.$key = consulta.$key;
     this.id = consulta.id;
     this.client = this.getClient(consulta.clientKey);
@@ -117,17 +129,15 @@ export class ConsultaComponent implements OnInit {
     this.price = consulta.price;
     this.discount = consulta.discount;
     this.total = consulta.total
- }
+  }
 
 
   calcDiscount() {
     if (this.client.visits < 2) {
       this.discount = 0;
-    }
-    else if (this.client.visits < 5) {
+    } else if (this.client.visits < 5) {
       this.discount = 5;
-    }
-    else {
+    } else {
       this.discount = 8;
     }
   }
@@ -137,7 +147,7 @@ export class ConsultaComponent implements OnInit {
   }
 
   getClient(key: string) {
-    return this.myClients.find(c=>c.$key===key);
+    return this.myClients.find(c => c.$key === key);
   }
 
   reset() {
@@ -154,7 +164,7 @@ export class ConsultaComponent implements OnInit {
     this.initialClient = null;
   }
 
-  onDelete($key:string){
+  onDelete($key: string) {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: 'btn btn-success buto',
@@ -162,7 +172,7 @@ export class ConsultaComponent implements OnInit {
       },
       buttonsStyling: false
     })
-    
+
     swalWithBootstrapButtons.fire({
       title: '¿Estás seguro de eliminar?',
       text: "Una vez eliminado no se podrá recuperar este registro",
@@ -174,7 +184,7 @@ export class ConsultaComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         //Removiendo visita del cliente
-        var cons = this.myConsults.find(c=>c.$key===$key);
+        var cons = this.myConsults.find(c => c.$key === $key);
         var client = this.getClient(cons.clientKey)
         this.ClientService.removeVisit(client);
 
@@ -199,18 +209,18 @@ export class ConsultaComponent implements OnInit {
     })
   }
 
-  leer(){
-    this.ClientService.getCliente().snapshotChanges().subscribe(items=>{
+  leer() {
+    this.ClientService.getCliente().snapshotChanges().subscribe(items => {
       this.myClients.length = 0;
-      items.forEach(element =>{
+      items.forEach(element => {
         let x = element.payload.toJSON();
         x["$key"] = element.key;
         this.myClients.push(x as Client);
       });
     });
-    this.ConsultaService.getConsulta().snapshotChanges().subscribe(items=>{
+    this.ConsultaService.getConsulta().snapshotChanges().subscribe(items => {
       this.myConsults.length = 0;
-      items.forEach(element =>{
+      items.forEach(element => {
         let x = element.payload.toJSON();
         x["$key"] = element.key;
         this.myConsults.push(x as Consult);
@@ -218,4 +228,61 @@ export class ConsultaComponent implements OnInit {
     });
   }
 
+  filter() {
+    if (this.param != "") {
+      this.ConsultaService.filterConsulta(parseInt(this.param)).snapshotChanges().subscribe(items => {
+        this.myConsults.length = 0;
+        items.forEach(element => {
+          let x = element.payload.toJSON();
+          x["$key"] = element.key;
+          this.myConsults.push(x as Consult);
+        });
+      });
+    } else {
+      this.leer();
+    }
+  }
+  printPDF(consult: Consult) {
+    var printWindow = window.open();
+    printWindow.document.write(this.getContentHTML(consult));
+    printWindow.document.title = "Ticket";
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+    printWindow.onafterprint = function(event) { printWindow.close() };
+  }
+
+  
+  printTxt() {
+    var atag = document.createElement("a");
+    var file = new Blob([this.getContent()], {type: 'text/plain'});
+    atag.href = URL.createObjectURL(file);
+    atag.download = "ticket.txt";
+    atag.click();
+ }
+
+ getContent(){
+   var content = ""
+    +"Numero de ticket: " +this.id+"\nCliente: "+this.client.name
+    +"\nDui: "+this.client.dui+"\nNombre de mascota: "+this.pet
+    +"\nTratamiento: "+this.treatment+"\nMedicamento: "+this.medicine
+    +"\nCosto de consulta: "+this.price.toFixed(2)+"\nDescuento: "+this.discount.toFixed(2)
+    +"\n\nTotal a pagar: "+this.total.toFixed(2)
+   
+   return content;
+ }
+
+ getContentHTML(consult: Consult){
+  var outHtml =
+  '<div class="row"><div class="col-6">Número de ticket:</div><div class="col-6">#' + consult.id + '</div></div>' +
+  '<div class="row"><div class="col-6">Cliente:</div><div class="col-6">' + this.getClient(consult.clientKey).name + '</div></div>' +
+  '<div class="row"><div class="col-6">DUI:</div><div class="col-6">' + this.getClient(consult.clientKey).dui + '</div></div>' +
+  '<div class="row"><div class="col-6">Nombre de mascota:</div><div class="col-6">' + consult.pet + '</div></div>' +
+  '<div class="row"><div class="col-6">Tratamiento:</div><div class="col-6">' + consult.treatment + '</div></div>' +
+  '<div class="row"><div class="col-6">Medicamento:</div><div class="col-6">' + consult.medicine + '</div></div>' +
+  '<div class="row"><div class="col-6">Costo de consulta:</div><div class="col-6">$' + consult.price.toFixed(2) + '</div></div>' +
+  '<div class="row"><div class="col-6">Descuento:</div><div class="col-6">$' + (consult.price * consult.discount / 100).toFixed(2) + '</div></div>' +
+  '<div class="row"><div class="col-6">Total a pagar:</div><div class="col-6">$' + consult.total.toFixed(2) + '</div></div>';
+  return outHtml;
+ }
 }

@@ -29,9 +29,13 @@
         <button type="submit" class="btn btn-success" [disabled]="!consultForm.form.valid">{{($key)? 'Actualizar' : 'Agregar'}}</button>
     </div>
     </form>
+    <div class="form-group">
+        <label for="filter">Filtrar por numero de ticket</label>
+        <input type="text" class="form-control" id="filter" required [(ngModel)]="param" name="filter" placeholder="Ingrese numero de ticket" (ngModelChange)="filter()">
+    </div>
     <table class="table">
         <thead>
-            <th>#</th>
+            <th>Numero de ticket</th>
             <th>Cliente</th>
             <th>Mascota</th>
             <th>Tratamiento</th>
@@ -52,6 +56,9 @@
                 <td>{{consult.discount}}%</td>
                 <td>${{consult.total.toFixed(2)}}</td>
                 <td>
+                    <a class="btn btn-warning text-white botone" (click)="printPDF(consult)">
+                        PDF
+                    </a>
                     <a class="btn btn-secondary text-white botone" (click)="onEdit(consult)">
                         <i class="far fa-edit"></i>
                     </a>

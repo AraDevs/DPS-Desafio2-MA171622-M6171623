@@ -11,6 +11,10 @@
         <button type="submit" class="btn btn-success right" [disabled]="!clientForm.form.valid">{{($key)? 'Actualizar' : 'Agregar'}}</button>
     </div>
 </form>
+<div class="form-group">
+    <label for="filter">Filtrar por cliente</label>
+    <input type="text" class="form-control" id="filter" required [(ngModel)]="param" name="filter" placeholder="Ingrese nombre de cliente" (ngModelChange)="filter()">
+</div>
 <div class="table-responsive">
     <table class="table">
         <thead>

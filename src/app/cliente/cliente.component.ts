@@ -23,6 +23,7 @@ export class ClienteComponent implements OnInit {
   myClients: Client[] = [];
   myConsults: Consult[] = []
   clie:Client;
+  param:string = "";
   
 
   constructor(
@@ -146,5 +147,20 @@ export class ClienteComponent implements OnInit {
         this.myConsults.push(x as Consult);
       });
     });
+  }
+
+  filter() {
+    if(this.param != ""){
+      this.ClientService.filterCliente(this.param).snapshotChanges().subscribe(items => {
+        this.myClients.length = 0;
+        items.forEach(element => {
+          let x = element.payload.toJSON();
+          x["$key"] = element.key;
+          this.myClients.push(x as Client);
+        });
+      });
+    }else{
+      this.leer();
+    }
   }
 }

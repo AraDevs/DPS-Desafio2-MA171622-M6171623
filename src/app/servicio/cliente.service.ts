@@ -44,6 +44,11 @@ export class ClienteService {
   deleteCliente($key:string){
     this.ClienteLista.remove($key);
   }
+
+  filterCliente(param: string){
+    return this.ClienteLista = this.firebase.list('Cliente', ref => ref.orderByChild("name").startAt(param).endAt(param+"\uf8ff"));
+  }
 }
+
 
 
